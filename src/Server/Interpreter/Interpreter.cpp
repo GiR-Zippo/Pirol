@@ -1,4 +1,7 @@
 #include "Interpreter.h"
+#include "Configuration.h"
+#include <ClientSocket.h>
+
 #include "Log.h"
 #include <iostream>
 #include <fstream>
@@ -9,9 +12,8 @@ Interpreter::Interpreter::Interpreter(ClientSocket* sock, const char* args): _so
     if (strchr(args,'GET'))
     {
         std::string req = std::string(args);
-        std::string file = req.substr(4);
+        std::string file = req.substr(req.find(" ")+1);
         file = file.substr(0, file.find(" "));
-        sLog->outString("%s", file.c_str());
         GetDatas(file);
     }
 }
@@ -26,10 +28,9 @@ void Interpreter::GetDatas(std::string file)
     if (file.compare("/") == 0)
         file = "/index.html";
     
-    file = "/var/www" + file;
+    file = sConfiguration->GetStringConfig(WWW_DATA_PATH) + file;
 
     std::string line;
-    sLog->outString("%s", file.c_str());
     ifstream myfile (file.c_str());
     
     if (myfile.is_open())
@@ -37,12 +38,13 @@ void Interpreter::GetDatas(std::string file)
         _sock->SendRequest("HTTP/1.1 200 OK");
         while ( myfile.good() )
         {
-            getline (myfile,line);
-            (void) _sock->send(line);
-            (void) _sock->send("\n");
+            getline(myfile,line);
+            _sock->send(line);
+            _sock->send("\n");
         }
         myfile.close();
     }
-    
+    else
+        _sock->SendRequest("HTTP/1.1 404 Not Found");
 }
 

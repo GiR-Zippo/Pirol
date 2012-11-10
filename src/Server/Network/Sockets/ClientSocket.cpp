@@ -1,5 +1,9 @@
 #include "Log.h"
 #include "ClientSocket.h"
+#include <ace/os_include/arpa/os_inet.h>
+#include <ace/os_include/netinet/os_tcp.h>
+#include <ace/os_include/sys/os_types.h>
+#include <ace/os_include/sys/os_socket.h>
 
 ClientSocket::ClientSocket()
 {}
@@ -19,6 +23,9 @@ int ClientSocket::open(void *)
 
     sLog->outString("Incoming connection from %s", remote_addr.get_host_addr());
 
+    static const int ndoption = 1;
+    peer().set_option (ACE_IPPROTO_TCP, TCP_NODELAY, (void*)&ndoption, sizeof (int));
+
     return activate();
 }
 
@@ -33,7 +40,7 @@ int ClientSocket::handle_close(ACE_HANDLE, ACE_Reactor_Mask)
 
 int ClientSocket::send(const std::string& line)
 {
-    return size_t(peer().send(line.c_str(), line.length())) == line.length() ? 0 : -1;
+    return size_t(peer().send(line.c_str(), line.length(), MSG_NOSIGNAL));// == line.length() ? 0 : -1;
 }
 
 int ClientSocket::recv_line(ACE_Message_Block& buffer)

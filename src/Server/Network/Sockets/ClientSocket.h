@@ -26,7 +26,6 @@ class ClientSocket: public ACE_Svc_Handler<ACE_SOCK_STREAM, ACE_MT_SYNCH>
         int process_command(const std::string& command);
         int SendRequest(const std::string& line);
         int send(const std::string& line);
-
     private:
 
 };
