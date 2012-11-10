@@ -9,6 +9,7 @@
 
 #include "Interpreter.h"
 
+class Interpreter;
 class ClientSocket: public ACE_Svc_Handler<ACE_SOCK_STREAM, ACE_MT_SYNCH>
 {
     friend class Interpreter;
@@ -27,6 +28,6 @@ class ClientSocket: public ACE_Svc_Handler<ACE_SOCK_STREAM, ACE_MT_SYNCH>
         int SendRequest(const std::string& line);
         int send(const std::string& line);
     private:
-
+        Interpreter* _ip;
 };
 #endif

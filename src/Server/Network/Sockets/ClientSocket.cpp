@@ -1,5 +1,7 @@
 #include "Log.h"
 #include "ClientSocket.h"
+#include "Define.h"
+
 #include <ace/os_include/arpa/os_inet.h>
 #include <ace/os_include/netinet/os_tcp.h>
 #include <ace/os_include/sys/os_types.h>
@@ -108,27 +110,30 @@ int ClientSocket::recv_line(std::string& out_line)
 
 int ClientSocket::process_command(const std::string& command)
 {
-    if (command.length() == 0)
+    if (command.compare("")==0)
+    {
+        _ip->ProcessCommand();
         return -1;
+    }
+    
     sLog->outString("Got command: %s", command.c_str());
-    Interpreter* _ip = new Interpreter(this, command.c_str());
-    return -1;
+    _ip->CheckCommand(command);
+    return 0;
 }
 
 int ClientSocket::SendRequest(const std::string& line)
 {
-    (void) send("\n");
     (void) send(line);
     (void) send("\n");
     (void) send("Server: Pirol Version 0.1\n");
     (void) send("\n");
-
+    
     return 0;
 }
 
 int ClientSocket::svc(void)
 {
-
+    _ip = new Interpreter(this);
     for(;;)
     {
         std::string line;

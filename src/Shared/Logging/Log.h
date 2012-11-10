@@ -7,11 +7,13 @@
 class Log
 {
 public:
+    Log();
     void outString(const char * str, ... );//                 ATTR_PRINTF(2, 3);
     void outString( );
     void outError( );
     void outError(const char * str, ... );//                 ATTR_PRINTF(2, 3);
 
+    bool enabled;
 };
 
 #define sLog ACE_Singleton<Log, ACE_Thread_Mutex>::instance()

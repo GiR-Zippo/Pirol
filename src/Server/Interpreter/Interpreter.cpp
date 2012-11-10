@@ -1,26 +1,48 @@
 #include "Interpreter.h"
 #include "Configuration.h"
-#include <ClientSocket.h>
+#include "ClientSocket.h"
+#include "Define.h"
 
 #include "Log.h"
 #include <iostream>
 #include <fstream>
 #include <string>
 
-Interpreter::Interpreter::Interpreter(ClientSocket* sock, const char* args): _sock(sock)
+inline bool strContains(const std::string inputStr, const std::string searchStr)
 {
-    if (strchr(args,'GET'))
-    {
-        std::string req = std::string(args);
-        std::string file = req.substr(req.find(" ")+1);
-        file = file.substr(0, file.find(" "));
-        GetDatas(file);
-    }
+        size_t contains;
+
+        contains = inputStr.find(searchStr);
+
+        if(contains != string::npos)
+                return true;
+        else
+                return false;
+}
+
+Interpreter::Interpreter::Interpreter(ClientSocket* sock): _sock(sock)
+{
+
 }
 
 Interpreter::Interpreter::~Interpreter()
 {
 
+}
+
+void Interpreter::CheckCommand(const std::string& args)
+{
+    if (strContains(args, "GET"))
+    {
+        std::string req = args;
+        _file = req.substr(req.find(" ")+1);
+        _file = _file.substr(0, _file.find(" "));
+    }
+}
+
+void Interpreter::ProcessCommand()
+{
+    GetDatas(_file);
 }
 
 void Interpreter::GetDatas(std::string file)
@@ -39,8 +61,8 @@ void Interpreter::GetDatas(std::string file)
         while ( myfile.good() )
         {
             getline(myfile,line);
-            _sock->send(line);
-            _sock->send("\n");
+            (void) _sock->send(line);
+            (void) _sock->send("\n");
         }
         myfile.close();
     }

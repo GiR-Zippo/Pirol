@@ -41,5 +41,4 @@ typedef ACE_UINT8 uint8;
   ACE_Read_Guard< MUTEX > TRINITY_GUARD_OBJECT (LOCK); \
     if (TRINITY_GUARD_OBJECT.locked() == 0) ASSERT(false);
 
-    
 #endif __DEFINE_H
