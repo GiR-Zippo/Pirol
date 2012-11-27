@@ -46,21 +46,17 @@ void ClientSocketMgr::run()
 
     if (acceptor.open(listen_addr, m_Reactor) == -1)
     {
-        sLog->outError("Strawberry RA can not bind to port %d on %s", raport, stringip.c_str());
+        sLog->outError("Pirol can not bind to port %d on %s", raport, stringip.c_str());
         return;
     }
 
-    sLog->outString("Starting Strawberry RA on port %d on %s", raport, stringip.c_str());
+    sLog->outString("Pirol on port %d on %s", raport, stringip.c_str());
 
     while (true)
     {
-        // don't be too smart to move this outside the loop
-        // the run_reactor_event_loop will modify interval
-        ACE_Time_Value interval(0, 100000);
+        ACE_Time_Value interval(0, 50000);
 
         if (m_Reactor->run_reactor_event_loop(interval) == -1)
             break;
     }
-
-    sLog->outString("Strawberry RA thread exiting");
 }

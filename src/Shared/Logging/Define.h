@@ -1,6 +1,7 @@
 #ifndef __DEFINE_H
 #define __DEFINE_H
 
+#include <string>
 #include <sys/types.h>
 
 #include <ace/Basic_Types.h>

@@ -1,3 +1,4 @@
+file(GLOB_RECURSE sources_Cache Cache/*.cpp Cache/*.h)
 file(GLOB_RECURSE sources_Interpreter Interpreter/*.cpp Interpreter/*.h)
 file(GLOB_RECURSE sources_Misc Misc/*.cpp Misc/*.h)
 file(GLOB_RECURSE sources_Network Network/Sockets/*.cpp Network/Sockets/*.h)
@@ -10,6 +11,7 @@ endif()
 
 set(web_SRCS
   ${web_SRCS}
+  ${sources_Cache}
   ${sources_Interpreter}
   ${sources_Misc}
   ${sources_Network}
@@ -28,9 +30,11 @@ include_directories(
   ${CMAKE_BINARY_DIR}
   ${CMAKE_SOURCE_DIR}/src/Shared/Configuration
   ${CMAKE_SOURCE_DIR}/src/Shared/Debugging
+  ${CMAKE_SOURCE_DIR}/src/Shared/Dynamic
   ${CMAKE_SOURCE_DIR}/src/Shared/Logging
   ${CMAKE_SOURCE_DIR}/src/Shared/Threading  
   ${CMAKE_CURRENT_SOURCE_DIR}
+  ${CMAKE_CURRENT_SOURCE_DIR}/Cache
   ${CMAKE_CURRENT_SOURCE_DIR}/Interpreter
   ${CMAKE_CURRENT_SOURCE_DIR}/Misc
   ${CMAKE_CURRENT_SOURCE_DIR}/Network/Sockets
@@ -50,7 +54,7 @@ endif()
 add_dependencies(web revision.h)
 
 if( UNIX )
-  set(webserver_LINK_FLAGS "-pthread -lncurses ${webserver_LINK_FLAGS}")
+  set(webserver_LINK_FLAGS "-pthread ${webserver_LINK_FLAGS}")
 endif()
 
 set_target_properties(web PROPERTIES LINK_FLAGS "${webserver_LINK_FLAGS}")

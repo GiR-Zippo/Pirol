@@ -23,17 +23,18 @@ int ClientSocket::open(void *)
         return -1;
     }
 
-    sLog->outString("Incoming connection from %s", remote_addr.get_host_addr());
+    sLog->outDebug("Incoming connection from %s", remote_addr.get_host_addr());
 
     static const int ndoption = 1;
     peer().set_option (ACE_IPPROTO_TCP, TCP_NODELAY, (void*)&ndoption, sizeof (int));
-
+    static const int m_SockOutKBuff = -1;
+    peer().set_option (SOL_SOCKET, SO_SNDBUF, (void*) & m_SockOutKBuff, sizeof (int));
     return activate();
 }
 
 int ClientSocket::handle_close(ACE_HANDLE, ACE_Reactor_Mask)
 {
-    sLog->outString("Closing connection");
+    sLog->outDebug("Closing connection");
     peer().close_reader();
     wait();
     destroy();
@@ -116,7 +117,7 @@ int ClientSocket::process_command(const std::string& command)
         return -1;
     }
     
-    sLog->outString("Got command: %s", command.c_str());
+    sLog->outDebug("Got command: %s", command.c_str());
     _ip->CheckCommand(command);
     return 0;
 }

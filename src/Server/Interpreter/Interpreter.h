@@ -13,6 +13,9 @@ class Interpreter
     private:
         
         void GetDatas(std::string file);
+
+        void ReadStream();
+        
         ClientSocket *_sock;
         std::string _file;
 };

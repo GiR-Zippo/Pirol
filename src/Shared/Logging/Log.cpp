@@ -1,16 +1,24 @@
-# include "Log.h"
+#include "Config.h"
+#include "Log.h"
+
 
 #include <stdarg.h>
 #include <stdio.h>
 
 Log::Log()
 {
-    enabled = true;
+    _enabled = true;
+}
+
+void Log::Initialize()
+{
+    _debug   = ConfigMgr::GetIntDefault("Log.Debug.On", true);
+    _enabled = ConfigMgr::GetBoolDefault("Log.Enabled", false);
 }
 
 void Log::outString(const char * str, ...)
 {
-    if (!enabled)
+    if (!_enabled)
         return;
     
     if (!str)
@@ -25,25 +33,34 @@ void Log::outString(const char * str, ...)
 
 void Log::outString()
 {
-    if (!enabled)
+    if (!_enabled)
         return;
     
     printf("\n");
 }
 
 void Log::outError( )
-{
-    if (!enabled)
-        return;
-    
+{   
     printf("\n");
 }
 
 void Log::outError(const char * str, ...)
-{
-    if (!enabled)
+{   
+    if (!str)
         return;
-    
+
+  va_list args;
+  va_start (args, str);
+  vprintf (str, args);
+  va_end (args);
+  printf("\n");
+}
+
+void Log::outDebug(const char * str, ...)
+{
+    if (!_debug)
+        return;
+
     if (!str)
         return;
 

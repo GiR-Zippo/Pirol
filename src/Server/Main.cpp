@@ -13,6 +13,7 @@
 #include "Log.h"
 #include "Config.h"
 #include "Configuration.h"
+#include "Cache.h"
 
 #ifndef _WEB_SERVER_CONFIG
 # define _WEB_SERVER_CONFIG "webserver.conf"
@@ -25,6 +26,8 @@ extern int main(int argc, char **argv)
     if (!ConfigMgr::Load(_WEB_SERVER_CONFIG))
         return 0;
     sConfiguration->Load();
+    sLog->Initialize();
+    sCache->Initialize();
     
     ACE_Based::Thread socket_thread(new ClientSocketMgr);
     socket_thread.wait();
