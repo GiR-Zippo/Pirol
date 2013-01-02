@@ -6,6 +6,7 @@ win*/
 *.rej
 *~
 .hg/
+.kdev4/
 *.kdev*
 *.bak
 *.patch
