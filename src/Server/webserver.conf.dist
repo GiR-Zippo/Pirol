@@ -1,5 +1,8 @@
 [webserver]
 
+#Port to listen
+ListenPort = 3000
+
 # Where is the content?
 DataDir=""
 
