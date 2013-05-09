@@ -43,7 +43,7 @@ int ClientSocket::handle_close(ACE_HANDLE, ACE_Reactor_Mask)
 
 int ClientSocket::send(const std::string& line)
 {
-    return size_t(peer().send(line.c_str(), line.length(), MSG_NOSIGNAL));// == line.length() ? 0 : -1;
+    return size_t(peer().send(line.c_str(), line.length(), MSG_NOSIGNAL));
 }
 
 int ClientSocket::recv_line(ACE_Message_Block& buffer)

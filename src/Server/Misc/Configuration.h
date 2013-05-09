@@ -21,6 +21,7 @@ enum BoolConfig
 enum IntConfig
 {
     CACHE_TIME = 0,
+    LISTEN_PORT,
     MAX_INT_CONFIG
 };
 

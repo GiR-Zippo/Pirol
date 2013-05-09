@@ -4,6 +4,7 @@
 
 void Configuration::Load()
 {
+    _intconfigdata[LISTEN_PORT]   = ConfigMgr::GetIntDefault("ListenPort", 3000);
     _strconfigdata[WWW_DATA_PATH] = ConfigMgr::GetStringDefault("DataDir", "/var/www");
     _strconfigdata[CACHE_FILES] = ConfigMgr::GetStringDefault("Cache.Files", "");
     _boolconfigdata[USE_CACHE] = ConfigMgr::GetBoolDefault("Cache.Enabled", false);

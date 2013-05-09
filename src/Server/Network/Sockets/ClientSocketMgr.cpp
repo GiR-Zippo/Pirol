@@ -8,6 +8,7 @@
 #include <ace/SOCK_Acceptor.h>
 
 #include "ClientSocket.h"
+#include "Configuration.h"
 
 ClientSocketMgr::ClientSocketMgr() : m_Reactor(NULL)
 {
@@ -39,7 +40,7 @@ void ClientSocketMgr::run()
 {
     ACE_Acceptor<ClientSocket, ACE_SOCK_ACCEPTOR> acceptor;
 
-    uint16 raport = 3000;
+    uint16 raport = sConfiguration->GetIntConfig(LISTEN_PORT);
     std::string stringip = "0.0.0.0";
 
     ACE_INET_Addr listen_addr(raport, stringip.c_str());
