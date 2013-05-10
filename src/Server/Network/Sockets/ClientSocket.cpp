@@ -9,12 +9,12 @@
 #include <ace/os_include/sys/os_socket.h>
 
 ClientSocket::ClientSocket()
-{}
+{
+    _ip = new Interpreter(this);
+}
 
 ClientSocket::~ClientSocket()
-{
-    delete _ip;
-}
+{}
 
 int ClientSocket::open(void *)
 {
@@ -42,6 +42,10 @@ int ClientSocket::handle_close(ACE_HANDLE, ACE_Reactor_Mask)
     wait();
     peer().close_writer();
     destroy();
+
+    if (_ip)
+        delete _ip;
+
     return 0;
 }
 
@@ -138,7 +142,6 @@ int ClientSocket::SendRequest(const std::string& line)
 
 int ClientSocket::svc(void)
 {
-    _ip = new Interpreter(this);
     for(;;)
     {
         std::string line;
@@ -149,6 +152,5 @@ int ClientSocket::svc(void)
         if (process_command(line) == -1)
             return -1;
     }
-
     return 0;
 }
