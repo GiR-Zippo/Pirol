@@ -10,14 +10,10 @@
 #include "Misc.h"
 
 Interpreter::Interpreter::Interpreter(ClientSocket* sock): _sock(sock)
-{
-
-}
+{}
 
 Interpreter::Interpreter::~Interpreter()
-{
-
-}
+{}
 
 void Interpreter::CheckCommand(const std::string& args)
 {

@@ -1,4 +1,5 @@
 #include "Log.h"
+#include "Interpreter.h"
 #include "ClientSocket.h"
 #include "Define.h"
 
@@ -11,7 +12,9 @@ ClientSocket::ClientSocket()
 {}
 
 ClientSocket::~ClientSocket()
-{}
+{
+    delete _ip;
+}
 
 int ClientSocket::open(void *)
 {
@@ -37,6 +40,7 @@ int ClientSocket::handle_close(ACE_HANDLE, ACE_Reactor_Mask)
     sLog->outDebug("Closing connection");
     peer().close_reader();
     wait();
+    peer().close_writer();
     destroy();
     return 0;
 }
